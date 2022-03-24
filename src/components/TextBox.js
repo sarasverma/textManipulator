@@ -17,6 +17,15 @@ export default function TextBox(props) {
     setText(resultText);
     props.alert("Converted to lowercase !", "success");
   }
+  function onClickCopy() {
+    // using navigator api to copy text
+    navigator.clipboard.writeText(text);
+    props.alert("Copied to clipboard !", "success");
+  }
+  function onClickClear() {
+    setText("");
+    props.alert("Cleared text !", "success");
+  }
   function onchangeHandler(event) {
     console.log("On change");
     setText(event.target.value);
@@ -52,6 +61,12 @@ export default function TextBox(props) {
         <button className="btn btn-primary my-2 mx-2" onClick={onClickLower}>
           Lowercase
         </button>
+        <button className="btn btn-primary my-2 mx-2" onClick={onClickCopy}>
+          Copy !
+        </button>
+        <button className="btn btn-primary my-2 mx-2" onClick={onClickClear}>
+          Clear !
+        </button>
       </div>
       <div
         className={`container my-3 text-${
@@ -59,13 +74,14 @@ export default function TextBox(props) {
         }`}
       >
         <h3>Summary</h3>
-        <p>{`${text.split(" ").length} words and ${text.length} characters`}</p>
+        {/* using regular expression in split , to split for either space or newline */}
+        <p>{`${
+          text.split(/\s/).filter((element) => {
+            return element !== "";
+          }).length
+        } words and ${text.length} characters`}</p>
         <h2>Preview</h2>
-        <p>
-          {text.length > 0
-            ? text
-            : "Enter something in the above textbox to preview it here"}
-        </p>
+        <p>{text.length > 0 ? text : "Nothing to preview !"}</p>
       </div>
     </>
   );
